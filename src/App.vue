@@ -19,7 +19,7 @@ export default {
     }
   },
   computed: {
-      isLoggedIn: function() { return this.$store.state.user }
+      isLoggedIn: function() { return this.$store.getters.user}
     },
  mounted(){
   this.$store.commit("initialize")

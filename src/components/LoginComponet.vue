@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from "axios"
 
 export default{
     name:'LoginComponet',
@@ -28,18 +29,23 @@ export default{
         return{
                 email: "",
                 password: "",
-                errormessage:"",
+                errormessage:""
+            
         }
 
     },
    methods:{
     login:function()
        {
-        let email=this.email;
+        let email=this.email
         let password=this.password
-        this.$store.dispatch('login', {'email':email,'password':password}).then( () =>{
-            this.$router.push({name:'Dashboard'})    
-               
+    
+       
+        axios.post(this.$store.state.baseurl + "/login",{email:email,password:password}).then( (response) =>{
+        this.$store.commit("login", JSON.stringify(response.data.data))
+        const token=response.data.token
+        axios.defaults.headers.common['Authorization'] = token
+        this.$router.push({name:'Dashboard'}) 
             })
           
           .catch(err => {
